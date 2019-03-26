@@ -112,7 +112,7 @@ func (p *Utils) CleanGroups() {
 			cl.RejectGroupInvitation(ctx, 0, gid)
 			time.Sleep(time.Second * 2)
 		}
-		fmt.Printf("%d group canceled\n", len(gids))
+		log.Printf("%d group canceled\n", len(gids))
 	}
 }
 
