@@ -44,7 +44,7 @@ func Init(client []*linethrift.TalkServiceClient, ctx context.Context, db *sql.D
 func (p *OpProcessor) ClearKickedCount() {
 	for {
 		time.Sleep(time.Minute * 2)
-		p.Kicked = nil
+		p.Kicked = map[string]map[string]uint{}
 	}
 }
 
