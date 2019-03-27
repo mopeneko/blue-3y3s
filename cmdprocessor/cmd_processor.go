@@ -179,7 +179,7 @@ func (p *CommandProcessor) SwitchIconProtection(message *linethrift.Message, isE
 	}
 	if !isAlready {
 		if isEnabled {
-			err = p.Utils.DownloadGroupPicture(message.To, "botcache/"+message.To+".jpg")
+			err = p.Utils.DownloadGroupPicture(message.To, "cache/"+message.To+".jpg")
 			if err != nil {
 				log.Println("error:", err.Error())
 				return
