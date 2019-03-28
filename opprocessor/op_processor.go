@@ -197,7 +197,7 @@ func (p *OpProcessor) updatedGroup(operation *linethrift.Operation) {
 				return
 			}
 			if isProtected {
-				cl := p.Utils.GetRandomClient()
+				cl := p.Utils.GetRandomKicker()
 				group, err := cl.GetGroup(p.Ctx, operation.Param1)
 				if err != nil {
 					log.Println("error:", err.Error())
@@ -251,7 +251,7 @@ func (p *OpProcessor) updatedGroup(operation *linethrift.Operation) {
 				log.Println("error:", err.Error())
 			}
 			if isProtected {
-				cl := p.Utils.GetRandomClient()
+				cl := p.Utils.GetRandomKicker()
 				if err != nil {
 					log.Println("error:", err.Error())
 					return
@@ -287,7 +287,7 @@ func (p *OpProcessor) updatedGroup(operation *linethrift.Operation) {
 				log.Println("error:", err.Error())
 			}
 			if isProtected {
-				cl := p.Utils.GetRandomClient()
+				cl := p.Utils.GetRandomKicker()
 				hasPermission, err := p.Utils.HasGroupPermission(operation.Param1, operation.Param2)
 				if err != nil {
 					log.Println("error:", err.Error())
@@ -362,24 +362,24 @@ func (p *OpProcessor) kickedoutFromGroup(operation *linethrift.Operation) {
 					err := client.KickoutFromGroup(p.Ctx, 0, operation.Param1, target)
 					if err != nil {
 						log.Println("error:", err.Error())
-						return
+						continue
 					}
 					ticket, err := client.ReissueGroupTicket(p.Ctx, operation.Param1)
 					if err != nil {
 						log.Println("error:", err.Error())
-						return
+						continue
 					}
 					group, err := client.GetGroupWithoutMembers(p.Ctx, operation.Param1)
 					if err != nil {
 						log.Println("error:", err.Error())
-						return
+						continue
 					}
 					if group.PreventedJoinByTicket {
 						group.PreventedJoinByTicket = false
 						err = client.UpdateGroup(p.Ctx, 0, group)
 						if err != nil {
 							log.Println("error:", err.Error())
-							return
+							continue
 						}
 					}
 					kickedClient.AcceptGroupInvitationByTicket(p.Ctx, 0, operation.Param1, ticket)
@@ -400,7 +400,7 @@ func (p *OpProcessor) kickedoutFromGroup(operation *linethrift.Operation) {
 			}
 		} else if ok, _ := p.Utils.HasGroupPermission(operation.Param1, operation.Param2); !ok {
 			if ok, _ := p.Utils.HasGroupPermission(operation.Param1, operation.Param3); ok {
-				client := p.Utils.GetRandomClient()
+				client := p.Utils.GetRandomKicker()
 				client.FindAndAddContactsByMid(
 					p.Ctx, 0, operation.Param3,
 					linethrift.ContactType_MID,
@@ -419,7 +419,7 @@ func (p *OpProcessor) kickedoutFromGroup(operation *linethrift.Operation) {
 					if count, ok := p.Kicked[operation.Param1][operation.Param2]; ok {
 						if count == 2 {
 							p.Kicked[operation.Param1][operation.Param2] = 0
-							client := p.Utils.GetRandomClient()
+							client := p.Utils.GetRandomKicker()
 							client.KickoutFromGroup(p.Ctx, 0, operation.Param1, []string{operation.Param2})
 						} else {
 							p.Kicked[operation.Param1][operation.Param2]++

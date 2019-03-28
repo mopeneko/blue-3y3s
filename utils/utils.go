@@ -45,6 +45,10 @@ func (p *Utils) GetRandomClient() *linethrift.TalkServiceClient {
 	return p.Client[rand.Intn(len(p.Client))]
 }
 
+func (p *Utils) GetRandomKicker() *linethrift.TalkServiceClient {
+	return p.Client[1:][rand.Intn(len(p.Client)-1)]
+}
+
 func (p *Utils) GenerateTextMessage(to string, text string) *linethrift.Message {
 	message := linethrift.NewMessage()
 	message.To = to
