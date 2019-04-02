@@ -135,6 +135,15 @@ func (p *OpProcessor) invitedIntoGroup(operation *linethrift.Operation) {
 					if err != nil {
 						log.Println("error:", err.Error())
 					}
+				} else {
+					_, err = p.DB.Exec(
+						`UPDATE protections SET inviter = ? WHERE id = ?`,
+						operation.Param2,
+						operation.Param1,
+					)
+					if err != nil {
+						log.Println("error:", err.Error())
+					}
 				}
 				log.Printf("info: Joined -> %s(%s)\n", operation.Param1, group.Name)
 			}
