@@ -21,54 +21,12 @@ type TalkProcessor struct {
 	DB                   *sql.DB
 	Ctx                  context.Context
 	Executed             []string
-	NormalHelp           string
-	SettingHelp          string
 	CmdProcessor         *cmdprocessor.CommandProcessor
 	StartProgramTime     time.Time
 	ChangeSubAdminSwitch map[string]bool
 }
 
-const (
-	NormalHelp = `このbotのコマンドリストです🐶💙✨
-
-
-たまき:権限確認	-> 権限の所持状況を確認できます
-
-たまき:速度 -> botのラグを確認できます
-
-たまき:ステータス -> BOTの稼働時間とシステム情報を確認できます
-
-
-⚠ここから先は招待者か予備管理者に設定されたメンバーしかできないよ⚠
-
-
-たまき:キッカー確認 -> キッカーがグループに全員いるか確認できます
-
-たまき:退会 -> BOTがグループから退会させられます（設定情報は保持）
-
-
-☆これらのコマンドは「💙」から始めても反応するよ`
-
-	SettingHelp = `このbotの設定コマンドリストです🐶💙✨
-「たまき:ヘルプ」って言うと通常のコマンドリストを見れるよ✨
-
-
-設定:確認 -> このグループの設定を確認できます
-
-
-⚠ここから先は招待者か予備管理者に設定されたメンバーしかできないよ⚠
-
-
-設定:サブ管理者変更 -> グループのサブ管理者（招待者と同等の権限を持つ）を設定できます
-
-設定:グループ名ロック:オン/オフ -> グループ名を固定するか設定できます
-
-設定:アイコンロック:オン/オフ -> グループアイコンを固定するか設定できます
-
-設定:招待リンク拒否:オン/オフ -> URLからグループに入れなくするか設定できます
-
-設定:招待拒否:オン/オフ -> 管理者か予備管理者以外による招待をキャンセルするか設定できます`
-)
+const HELP_URL = "line://app/1559882908-RgxMO3P1"
 
 func Init(u *utils.Utils, db *sql.DB, ctx context.Context, startProgramTime time.Time) *TalkProcessor {
 	executed := []string{}
@@ -79,7 +37,7 @@ func Init(u *utils.Utils, db *sql.DB, ctx context.Context, startProgramTime time
 		u.CleanGroups()
 	}()
 
-	return &TalkProcessor{u, db, ctx, executed, NormalHelp, SettingHelp, cmdp, startProgramTime, changeSubAdminSwitch}
+	return &TalkProcessor{u, db, ctx, executed, cmdp, startProgramTime, changeSubAdminSwitch}
 }
 
 func (p *TalkProcessor) ClearExecutedList() {
@@ -114,7 +72,7 @@ func (p *TalkProcessor) Process(message *linethrift.Message) {
 
 						switch command {
 						case cmd.NORMAL_HELP:
-							p.Utils.SendMessageWithRandomClient(p.Ctx, message.To, p.NormalHelp)
+							p.Utils.SendMessageWithRandomClient(p.Ctx, message.To, HELP_URL)
 						case cmd.NORMAL_CHECKSTATUS:
 							p.CmdProcessor.SendStatus(message)
 						case cmd.NORMAL_CHECKPERMISSION:
@@ -156,7 +114,7 @@ func (p *TalkProcessor) Process(message *linethrift.Message) {
 					if cmdchecker.IsNormalCommand(commands) {
 						switch command {
 						case cmd.NORMAL_HELP:
-							p.Utils.SendMessageWithRandomClient(p.Ctx, message.To, p.SettingHelp)
+							p.Utils.SendMessageWithRandomClient(p.Ctx, message.To, HELP_URL)
 						case cmd.SETTING_CHECK:
 							p.CmdProcessor.CheckSetting(message)
 						default:
