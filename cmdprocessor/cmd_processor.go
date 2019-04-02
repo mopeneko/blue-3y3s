@@ -412,15 +412,16 @@ func (p *CommandProcessor) CheckKickers(message *linethrift.Message) {
 			group.PreventedJoinByTicket = false
 			client.UpdateGroup(p.Ctx, 0, group)
 		}
+
+		wg := &sync.WaitGroup{}
 		for _, notValidClient := range notValidClients {
-			err = notValidClient.AcceptGroupInvitationByTicket(
-				p.Ctx, 0, message.To, ticket,
-			)
-			if err != nil {
-				log.Println("error:", err)
-				return
-			}
+			wg.Add(1)
+			go func(cl *linethrift.TalkServiceClient) {
+				defer wg.Done()
+				notValidClient.AcceptGroupInvitationByTicket(p.Ctx, 0, message.To, ticket)
+			}(notValidClient)
 		}
+		wg.Wait()
 		group.PreventedJoinByTicket = true
 		p.Utils.GetRandomClient().UpdateGroup(p.Ctx, 0, group)
 	}
