@@ -75,7 +75,7 @@ func (p *CommandProcessor) buildSettingResultText(setType string, isAlready bool
 		} else {
 			recvmesg += "オフ"
 		}
-		recvmesg += "にしました🐶💙✨"
+		recvmesg += "にしたのですっ"
 	} else {
 		recvmesg += "は既に"
 		if isEnabled {
@@ -83,7 +83,7 @@ func (p *CommandProcessor) buildSettingResultText(setType string, isAlready bool
 		} else {
 			recvmesg += "オフ"
 		}
-		recvmesg += "です💦"
+		recvmesg += "なのですっ"
 	}
 
 	return recvmesg
@@ -259,7 +259,7 @@ func (p *CommandProcessor) CheckSetting(message *linethrift.Message) {
 			0,
 			p.Utils.GenerateTextMessage(
 				message.To,
-				"エラーが発生しました。",
+				"エラーが発生したのですっ",
 			),
 		)
 		return
@@ -321,13 +321,13 @@ func (p *CommandProcessor) CheckPermission(message *linethrift.Message) {
 	recvmesg := ""
 	if status != "" {
 		if hasPermission {
-			recvmesg = "あなたは権限を所持しています。"
+			recvmesg = "あなたは権限を所持してるのですっ"
 		} else {
-			recvmesg = "あなたの権限は既に失効されています。"
+			recvmesg = "あなたの権限は既に失効されているみたいです。。。"
 		}
 		recvmesg += fmt.Sprintf("\n\n[有効期限]\n%s", status)
 	} else {
-		recvmesg = "あなたは権限を所持しておりません。"
+		recvmesg = "あなたは権限を所持していないみたいです。。。"
 	}
 	p.Utils.SendMessageWithRandomClient(p.Ctx, message.To, recvmesg)
 }
@@ -380,7 +380,7 @@ func (p *CommandProcessor) CheckKickers(message *linethrift.Message) {
 		p.Utils.SendMessageWithRandomClient(
 			p.Ctx,
 			message.To,
-			"全員います🐶💙✨",
+			"全員いるのですっ",
 		)
 	} else {
 		notValidSize := len(p.Utils.Client) - len(validMids)
@@ -388,7 +388,7 @@ func (p *CommandProcessor) CheckKickers(message *linethrift.Message) {
 			p.Ctx, 0,
 			p.Utils.GenerateTextMessage(
 				message.To,
-				fmt.Sprintf("%d体補充します🐶💙✨", notValidSize),
+				fmt.Sprintf("%d体補充するのですっ", notValidSize),
 			),
 		)
 		notValidClients := []*linethrift.TalkServiceClient{}
@@ -443,6 +443,6 @@ func (p *CommandProcessor) ChangeSubAdmin(message *linethrift.Message, list map[
 	list[message.To] = true
 	p.Utils.SendMessageWithRandomClient(
 		p.Ctx, message.To,
-		"サブ管理者にしたいアカウントの連絡先を送信してください🐶💙✨",
+		"サブ管理者にしたいアカウントの連絡先を送信するのですっ",
 	)
 }
