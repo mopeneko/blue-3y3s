@@ -26,7 +26,7 @@ type TalkProcessor struct {
 	ChangeSubAdminSwitch map[string]bool
 }
 
-const HELP_URL = "line://app/1559882908-RgxMO3P1"
+const HELP_TEXT = "ここはモードセレクト！この場所から全てが始まるのですっ\n\nline://app/1559882908-RgxMO3P1"
 
 func Init(u *utils.Utils, db *sql.DB, ctx context.Context, startProgramTime time.Time) *TalkProcessor {
 	executed := []string{}
@@ -72,7 +72,7 @@ func (p *TalkProcessor) Process(message *linethrift.Message) {
 
 						switch command {
 						case cmd.NORMAL_HELP:
-							p.Utils.SendMessageWithRandomClient(p.Ctx, message.To, HELP_URL)
+							p.Utils.SendMessageWithRandomClient(p.Ctx, message.To, HELP_TEXT)
 						case cmd.NORMAL_CHECKSTATUS:
 							p.CmdProcessor.SendStatus(message)
 						case cmd.NORMAL_CHECKPERMISSION:
@@ -114,7 +114,7 @@ func (p *TalkProcessor) Process(message *linethrift.Message) {
 					if cmdchecker.IsNormalCommand(commands) {
 						switch command {
 						case cmd.NORMAL_HELP:
-							p.Utils.SendMessageWithRandomClient(p.Ctx, message.To, HELP_URL)
+							p.Utils.SendMessageWithRandomClient(p.Ctx, message.To, HELP_TEXT)
 						case cmd.SETTING_CHECK:
 							p.CmdProcessor.CheckSetting(message)
 						default:

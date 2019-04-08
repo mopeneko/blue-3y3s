@@ -98,12 +98,9 @@ func (p *OpProcessor) invitedIntoGroup(operation *linethrift.Operation) {
 						0,
 						p.Utils.GenerateTextMessage(
 							operation.Param1,
-							"わんたま〜\n\n"+
-								"[概要]\n"+
-								"「犬山たまき保護bot」はバーチャルYouTuber 犬山たまきのなりきりグループ保護BOTです。\n\n"+
-								"犬山たまき\n"+
-								"https://www.youtube.com/channel/UC8NZiqKx6fsDT3AVcMiVFyA\n"+
-								"https://twitter.com/norioo_\n\n"+
+							"認証完了なのです！\n"+
+								"さあ、張り切って参りましょうかっ\n\n"+
+								"※台詞はbeatmania IIDX 26 Rootageのシステムボイスを参考にしています。\n\n"+
 								"[作者]\n"+
 								"のえる\n"+
 								"http://line.me/ti/p/%40djv5227g\n\n"+
@@ -165,7 +162,7 @@ func (p *OpProcessor) invitedIntoGroup(operation *linethrift.Operation) {
 				kickerSize := len(p.Kicker)
 				kickers := make([]*linethrift.TalkServiceClient, kickerSize)
 				for i, kicker := range p.Kicker {
-					newKicker, _ := lineapi.NewLineClient(kicker.AuthToken)
+					newKicker, _, _ := lineapi.NewLineClient(kicker.AuthToken)
 					kickers[i] = newKicker
 				}
 				kicked := strings.Split(operation.Param3, "\x1e")
